@@ -23,6 +23,7 @@ struct node {
 	string tty;
 	string time;
 	string cmd;
+	string location;
 
 	nptr next;
 };
@@ -35,29 +36,45 @@ struct string_node {
 	snptr next;	
 };
 
+/***************************************************************************************************
+******************************************** STRING CLASS ******************************************
+****************************************************************************************************/
+
 class string_list {
 
 	public:
 		string_list();
 		~string_list();
-		void insert();
-	
+		void insert(string);
+		string get_single_value();
+		void output_list();
+		bool get_cur_increment();
+		void reset_cur_pointer();
+		
 	private:
 		snptr pvalues;
-		
+		snptr cur;
+		int curIncrement;
 };
 
+/***************************************************************************************************
+******************************************** LIST CLASS ********************************************
+****************************************************************************************************/
+
 class list {
+
+	friend class table;
 
 	public:
 		list();
 		~list();
-		void add_values(string, int, int, string, string, string, string);	
+		void format_string(string);
+		void add_values(string[10], string);
+		void output_list();
 		void summary();
 	
 	private:
+		
 		nptr process;
 	
-
-		
 };

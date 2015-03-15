@@ -18,51 +18,30 @@ using namespace std;
 int main(){
 
 	int counter = 0;
-//	string current_processes[2000];
+
 	string temp;
-	snptr node  = NULL;
-	snptr tempNode = NULL;
-	snptr cur = NULL;
+	string_list read;
+	
+	table hash_index;
+	list cur_users;
 	
 	while (getline(cin, temp)) {
-		if(node == NULL){
-			node = new string_node;
-			node->value = temp;
-			node->next = NULL;
-		}else {
-			tempNode = new string_node;
-			tempNode->value = temp;
-			tempNode->next = NULL;
-			cur = node;
-			while(cur->next != NULL){
-				cur = cur->next;
-			}
-			cur->next = tempNode;
-			tempNode = node;
-			
-		}
 		
-	//	current_processes[counter] = temp;
-
+		if(counter > 0){
+			read.insert(temp);
+		}
+		counter++;
 	}
 	
-	/*
-		cout << temp << endl;	
-		for(int i = 0; i < temp.length(); i++){
-
-			cout << temp[i] << " -- " << (int)temp[i] << endl;
-
-		}*/
-		
-		cur = node;
-		while(cur->next != NULL){
-			if(counter < 10){
-			cout << cur->value << endl;
-						}
-			cur = cur->next;
-
-					counter++;
+	temp = "";
+	while(read.get_cur_increment() != false){
+		temp = read.get_single_value();
+		if(temp.length() > 0){
+			cur_users.format_string(temp);
 		}
+	}
+
+	hash_index.copy_sort_list(cur_users);
 
     return 0;
     
