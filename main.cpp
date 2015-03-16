@@ -42,6 +42,7 @@ int main(){
 	}
 
 	hash_index.copy_sort_list(cur_users);
+	hash.show_table();
 
     return 0;
     

@@ -56,7 +56,6 @@ int table::hash_convert(string key){
 
 void table::copy_sort_list(const list & object){
 
-
 	nptr cur = object.process;
 	string curUser;
 	int returnTotal = 0;
@@ -64,10 +63,15 @@ void table::copy_sort_list(const list & object){
 	while(cur->next != NULL){
 		curUser = cur->uid;
 		returnTotal = hash_convert(curUser);
+		append_item(returnTotal, cur);
 
-		cout << returnTotal << endl;
 		cur = cur->next;
 	}
+}
+
+void table::append_item(int index, nptr & node){
+
+	row[index]->add_values_singular(node->uid, node->pid, node->ppid, node->stime, node->tty, node->time, node->cmd, node->location);
 
 }
 
@@ -90,4 +94,4 @@ bool table::check_user_list(string new_user){
 	}
 
 }
-*//
+*/

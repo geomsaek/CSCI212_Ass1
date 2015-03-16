@@ -70,6 +70,7 @@ class list {
 		~list();
 		void format_string(string);
 		void add_values(string[10], string);
+		void add_values_singular(string, int, int, string, string, string, string, string);
 		void output_list();
 		void summary();
 	

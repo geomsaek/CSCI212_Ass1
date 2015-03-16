@@ -233,6 +233,40 @@ void list::add_values(string process_array[10], string locationVal){
 
 /************
 
+	FORMAT STRING
+		- add values to node in linked list
+
+************/
+void list::add_values_singular(string new_uid, int new_pid, int new_ppid, string new_stime, string new_tty, string new_time, string new_cmd, string new_location){
+	
+	nptr temp = new node;
+
+	temp->uid = new_uid;
+	temp->pid = new_pid;
+	temp->ppid = new_ppid;
+ 	temp->stime = new_stime;
+ 	temp->tty = new_tty;
+ 	temp->time = new_time;
+ 	temp->cmd = new_cmd;
+ 	temp->location = new_location;
+ 	temp->next = NULL;
+	
+	if(process == NULL){
+		process = temp;
+	}else {
+		nptr cur = process;
+		while(cur->next != NULL){
+			cur = cur->next;
+		}
+		cur->next = temp;
+		temp = process;
+	}
+	
+	return;
+}
+
+/************
+
 	OUTPUT LIST
 		- outputs the current list item
 
