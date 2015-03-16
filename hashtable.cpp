@@ -53,6 +53,12 @@ int table::hash_convert(string key){
 	
 }
 
+/************
+
+	COPY SORT LIST
+		- copies a list to the hash table
+
+************/
 
 void table::copy_sort_list(const list & object){
 
@@ -69,29 +75,58 @@ void table::copy_sort_list(const list & object){
 	}
 }
 
+/************
+
+	APPEND ITEM
+		- adds list node to key in array
+
+************/
+
 void table::append_item(int index, nptr & node){
 
+	// create the new list class if there is not a list at the current key value of the table
+	if(row[index] == NULL){
+		row[index] = new list();
+	}
+	// add the values to the list. the nested class will handle this
 	row[index]->add_values_singular(node->uid, node->pid, node->ppid, node->stime, node->tty, node->time, node->cmd, node->location);
 
 }
 
 /************
 
-	OUTPUT LIST
-		- outputs the current list item
+	SHOW TABLE
+		- displays the keys and table lists
 
-************
+************/
 
-bool table::check_user_list(string new_user){
+void table::show_table(){
 
-	if(user_id_size == -1){
-		user_id_size = 0;
-		user_ids[0] = new_user;
-	}else {
-		for(int i = 0; i < user_id_size; i++){
-
+	for(int i = 0; i < 120; i++){
+		if(row[i] != NULL){
+			cout << endl;
+			//cout << "****************************************************************************************************************************************************************************************************" << endl;
+			cout << "UID" << "\t\t" << "PID" << "\t\t" << "PPID" << "\t\t" << "STIME" << "\t\t" << "TTY" << "\t\t" << "TIME" << "\t\t" << "CMD" << "\t\t" << "LOCATION" << endl;
+			row[i]->output_list_char("\t\t");
+			//cout << "****************************************************************************************************************************************************************************************************" << endl;
+			cout << endl;
 		}
+
 	}
 
 }
-*/
+
+/************
+
+	SUMMARY
+		- outputs a summary of each list
+
+************/
+
+void table::summary(){
+	for(int i = 0; i < 120; i++){
+		if(row[i] != NULL){
+			row[i]->list_summary();
+		}
+	}
+}

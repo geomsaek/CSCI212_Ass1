@@ -240,7 +240,7 @@ void list::add_values(string process_array[10], string locationVal){
 void list::add_values_singular(string new_uid, int new_pid, int new_ppid, string new_stime, string new_tty, string new_time, string new_cmd, string new_location){
 	
 	nptr temp = new node;
-
+	
 	temp->uid = new_uid;
 	temp->pid = new_pid;
 	temp->ppid = new_ppid;
@@ -278,6 +278,7 @@ void list::output_list(){
 	
 		while(cur->next != NULL){
 			cout << cur->uid << endl;
+			cout << cur->pid << endl;
 			cout << cur->ppid << endl;
 			cout << cur->stime << endl;
 			cout << cur->tty << endl;
@@ -291,4 +292,84 @@ void list::output_list(){
 		}
 	}
 	
+}
+
+/************
+
+	OUTPUT LIST WITH CHARACTER
+		- outputs the current list with a spacing character
+
+************/
+void list::output_list_char(string space){
+
+	if(process != NULL){	
+		nptr cur = process;
+	
+		while(cur->next != NULL){
+			cout << cur->uid << space;
+			cout << cur->pid << space;
+			cout << cur->ppid << space;
+			cout << cur->stime << space;
+			cout << cur->tty << space;
+			cout << cur->time << space;
+			cout << cur->cmd << space;
+			cout << cur->location << endl;
+
+			cur = cur->next;
+		}
+	}
+}
+
+/************
+
+	LIST SUMMARY
+		- summarises the information for a given list
+
+************/
+
+void list::list_summary(){
+
+	if(process != NULL){	
+		
+		nptr cur = process;
+		string curUser = "";
+		int counter = 0;
+		int processCounter = 0;
+		
+		int hourCount = 0;
+		int minuteCount = 0;
+		int secondCount = 0;
+		
+		char firstDigit = '\0';
+		char secondDigit = '\0';
+		
+		string longest = "";
+		int long_pid = 0;
+		int longLength = 0;
+		
+		// need to change to reflect collision users
+		curUser = process->uid;
+		
+		while(cur->next != NULL){
+			
+			
+			if(cur->location.length() > longLength){
+				longest = cur->location;
+				longLength = cur->location.length();
+				long_pid = cur->pid;
+			}
+			counter = counter + 1;
+			cur = cur->next;
+		}
+		
+		cout << "user " << curUser << endl;
+		cout << "=========" << endl;
+		cout << endl;
+		cout << "User " << curUser << "  has a total of " << counter << " processes" << endl;
+		cout << "User " << curUser << " has consumed " << endl;
+		cout << "The process id with the longest path name is pid " << long_pid << " " << longest << endl;
+		cout << endl;
+		cout << endl;
+			
+	}
 }

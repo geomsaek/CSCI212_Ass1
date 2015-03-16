@@ -72,6 +72,8 @@ class list {
 		void add_values(string[10], string);
 		void add_values_singular(string, int, int, string, string, string, string, string);
 		void output_list();
+		void output_list_char(string);
+		void list_summary();
 		void summary();
 	
 	private:
