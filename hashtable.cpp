@@ -89,7 +89,7 @@ void table::append_item(int index, nptr & node){
 		row[index] = new list();
 	}
 	// add the values to the list. the nested class will handle this
-	row[index]->add_values_singular(node->uid, node->pid, node->ppid, node->stime, node->tty, node->time, node->cmd, node->location);
+	row[index]->add_values_singular(node->uid, node->pid, node->ppid, node->c, node->stime, node->tty, node->time, node->location);
 
 }
 
@@ -106,7 +106,7 @@ void table::show_table(){
 		if(row[i] != NULL){
 			cout << endl;
 			//cout << "****************************************************************************************************************************************************************************************************" << endl;
-			cout << "UID" << "\t\t" << "PID" << "\t\t" << "PPID" << "\t\t" << "STIME" << "\t\t" << "TTY" << "\t\t" << "TIME" << "\t\t" << "CMD" << "\t\t" << "LOCATION" << endl;
+			cout << "UID" << "\t\t" << "PID" << "\t\t" << "PPID" << "\t\t" << "C" << "\t\t" << "STIME" << "\t\t" << "TTY" << "\t\t" << "TIME" << "\t\t" << "LOCATION" << endl;
 			row[i]->output_list_char("\t\t");
 			//cout << "****************************************************************************************************************************************************************************************************" << endl;
 			cout << endl;

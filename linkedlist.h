@@ -19,10 +19,10 @@ struct node {
 	string uid;
 	int pid;
 	int ppid;
+	string c;
 	string stime;
 	string tty;
 	string time;
-	string cmd;
 	string location;
 
 	nptr next;
@@ -74,6 +74,7 @@ class list {
 		void output_list();
 		void output_list_char(string);
 		void list_summary();
+		void convert_int_literal(string, int &, int &, int &);
 		void summary();
 	
 	private:

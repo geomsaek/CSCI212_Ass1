@@ -8,6 +8,8 @@
 
 #include<iostream>
 #include<string>
+#include<cstdlib>
+#include <stdlib.h>
 #include "linkedlist.h"
 using namespace std;
 
@@ -210,10 +212,10 @@ void list::add_values(string process_array[10], string locationVal){
 	temp->uid = process_array[0];
 	temp->pid = stoi(process_array[1]);
 	temp->ppid = stoi(process_array[2]);
- 	temp->stime = process_array[3];
- 	temp->tty = process_array[4];
- 	temp->time = process_array[5];
- 	temp->cmd = process_array[6];
+	temp->c = process_array[3];
+ 	temp->stime = process_array[4];
+ 	temp->tty = process_array[5];
+ 	temp->time = process_array[6];
  	temp->location = locationVal;
  	temp->next = NULL;
 	
@@ -237,17 +239,17 @@ void list::add_values(string process_array[10], string locationVal){
 		- add values to node in linked list
 
 ************/
-void list::add_values_singular(string new_uid, int new_pid, int new_ppid, string new_stime, string new_tty, string new_time, string new_cmd, string new_location){
+void list::add_values_singular(string new_uid, int new_pid, int new_ppid, string new_c, string new_stime, string new_tty, string new_time, string new_location){
 	
 	nptr temp = new node;
 	
 	temp->uid = new_uid;
 	temp->pid = new_pid;
 	temp->ppid = new_ppid;
+	temp->c = new_c;
  	temp->stime = new_stime;
  	temp->tty = new_tty;
  	temp->time = new_time;
- 	temp->cmd = new_cmd;
  	temp->location = new_location;
  	temp->next = NULL;
 	
@@ -280,10 +282,10 @@ void list::output_list(){
 			cout << cur->uid << endl;
 			cout << cur->pid << endl;
 			cout << cur->ppid << endl;
+			cout << cur->c << endl;
 			cout << cur->stime << endl;
 			cout << cur->tty << endl;
 			cout << cur->time << endl;
-			cout << cur->cmd << endl;
 			cout << cur->location << endl;
 
 			cur = cur->next;
@@ -309,10 +311,10 @@ void list::output_list_char(string space){
 			cout << cur->uid << space;
 			cout << cur->pid << space;
 			cout << cur->ppid << space;
+			cout << cur->c << space;
 			cout << cur->stime << space;
 			cout << cur->tty << space;
 			cout << cur->time << space;
-			cout << cur->cmd << space;
 			cout << cur->location << endl;
 
 			cur = cur->next;
@@ -332,44 +334,105 @@ void list::list_summary(){
 	if(process != NULL){	
 		
 		nptr cur = process;
-		string curUser = "";
-		int counter = 0;
+		
 		int processCounter = 0;
 		
-		int hourCount = 0;
-		int minuteCount = 0;
-		int secondCount = 0;
+		int totalHour = 0, totalMin = 0, totalSec = 0;
 		
-		char firstDigit = '\0';
-		char secondDigit = '\0';
-		
-		string longest = "";
-		int long_pid = 0;
-		int longLength = 0;
+		string longest = "", curUser = "";
+		int long_pid = 0, longLength = 0;
 		
 		// need to change to reflect collision users
 		curUser = process->uid;
 		
 		while(cur->next != NULL){
-			
+
+			convert_int_literal(cur->time, totalHour, totalMin, totalSec);
 			
 			if(cur->location.length() > longLength){
 				longest = cur->location;
 				longLength = cur->location.length();
 				long_pid = cur->pid;
 			}
-			counter = counter + 1;
+			processCounter = processCounter + 1;
 			cur = cur->next;
 		}
 		
 		cout << "user " << curUser << endl;
 		cout << "=========" << endl;
 		cout << endl;
-		cout << "User " << curUser << "  has a total of " << counter << " processes" << endl;
-		cout << "User " << curUser << " has consumed " << endl;
+		cout << "User " << curUser << "  has a total of " << processCounter << " processes" << endl;
+		cout << "User " << curUser << " has consumed a total of " << totalHour << " hours, " << totalMin << " minutes, and " << totalSec << " seconds of CPU time" << endl;
 		cout << "The process id with the longest path name is pid " << long_pid << " " << longest << endl;
 		cout << endl;
 		cout << endl;
 			
 	}
+}
+
+/************
+
+	CONVERT INTEGER
+		- converts two characters into literal numeric values
+
+************/
+
+void list::convert_int_literal(string time, int & totalHour, int & totalMin, int & totalSec){
+	
+	string timeString = "";
+	int tempLen = 0, hourCount = 0, minuteCount = 0, secCount = 0;
+	char firstDigit = '\0', secondDigit = '\0', extra = '\0';
+	
+	string hourTemp="", minTemp="", secTemp="";
+	
+	timeString = time;
+	tempLen = time.length();
+	
+	int secIndex = time.length()-2;
+
+// gettitng time conversion correct. seems to show seconds correctly through current cnversion
+// however minutes seems different
+	int secVal = 0;
+	secVal = atoi (&timeString[secIndex]);
+	
+	cout << "TIME: " << time << endl;
+	cout << secVal << endl;
+	
+	int minVal = 0;
+	int minIndex = time.length() - 4;
+	minVal = atoi(&timeString[minIndex]);
+	
+	cout << minVal << endl;
+	
+//	secondDigit = timeString[time.length() -1];
+//	cout << firstDigit << secondDigit << endl;
+
+//	secTemp = timeString[time.length()-2] + timeString[time.length() -1];
+	
+//	cout << secTemp << endl;
+	/*	
+	firstDigit = timeString[time.length()-5];
+	secondDigit = timeString[tempLen-4];
+	
+	minTemp = firstDigit + secondDigit;
+	
+	
+	firstDigit = timeString[tempLen-8];
+	secondDigit = timeString[tempLen-7];
+
+	if(time.length() > 7){
+		extra = timeString[tempLen-9];
+		hourTemp = extra + firstDigit + secondDigit;
+	}else {
+		hourTemp = firstDigit + secondDigit;
+	}
+	
+	hourCount = stoi(hourTemp);
+	minuteCount = stoi(minTemp);
+	secCount = stoi(secTemp);*/
+	
+	//totalHour = totalHour + hourCount;
+	//totalMin = totalMin + minuteCount;
+//	totalSec = totalSec + secCount;
+
 }
