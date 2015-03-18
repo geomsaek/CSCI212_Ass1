@@ -76,9 +76,15 @@ class list {
 		void list_summary();
 		void convert_int_literal(string, int &, int &, int &);
 		void summary();
-	
+
+		int list_length();
+		string get_uid();
+		int get_pid();
+		string get_longest_path();
+
 	private:
 		
 		nptr process;
+		int convert_time_value(int &);
 	
 };

@@ -124,9 +124,50 @@ void table::show_table(){
 ************/
 
 void table::summary(){
+
+	int processCount = 0;
+	string curLong = "";
+	int tempLong = 0;
+	string retLong = "";
+	int long_pid = 0;
+	string long_uid = "";
+
+	int greatLength = 0;
+	string lengthUser = "";
+
+	int leastLength = 9999;
+	string leastUser = "";
+
 	for(int i = 0; i < 120; i++){
 		if(row[i] != NULL){
+
 			row[i]->list_summary();
+			retLong = row[i]->get_longest_path();
+			if(retLong.length() > tempLong){
+				tempLong = retLong.length();
+				curLong = retLong;
+				long_pid = row[i]->get_pid();
+				long_uid = row[i]->get_uid();
+			}
+			processCount = processCount + 1;
+			if(row[i]->list_length() > greatLength){
+				greatLength = row[i]->list_length();
+				lengthUser = row[i]->get_uid();
+			}
+			if(row[i]->list_length() < leastLength){
+				leastLength = row[i]->list_length();
+				leastUser = row[i]->get_uid();
+			}
+
 		}
 	}
+	cout << "Statistical Summary" << endl;
+	cout << "==================" << endl;
+	cout << "There are a total of " << processCount << " processes in the process table." << endl;
+	cout << endl;
+	cout << "User " << lengthUser << " has the most processes in the table (count = " << greatLength << ")" << endl;
+	cout << "User " << leastUser << " has the least processes in the table (count = " << leastLength << ")" << endl;
+	cout << endl;
+	cout << "The process with the longest path name is pid " << long_pid << " with the path name " << curLong << " belongong to the " << long_uid << " user" << endl;
+
 }

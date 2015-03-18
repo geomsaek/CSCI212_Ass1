@@ -293,7 +293,6 @@ void list::output_list(){
 			cout << endl;
 		}
 	}
-	
 }
 
 /************
@@ -341,6 +340,7 @@ void list::list_summary(){
 		
 		string longest = "", curUser = "";
 		int long_pid = 0, longLength = 0;
+		int carry = 0;
 		
 		// need to change to reflect collision users
 		curUser = process->uid;
@@ -358,6 +358,15 @@ void list::list_summary(){
 			cur = cur->next;
 		}
 		
+		carry = convert_time_value(totalSec);
+		if(carry != -1){
+			totalMin = totalMin + carry;
+			carry = convert_time_value(totalMin);
+		}
+		if(carry != -1){
+			totalHour = totalHour + carry;
+		}
+
 		cout << "user " << curUser << endl;
 		cout << "=========" << endl;
 		cout << endl;
@@ -378,61 +387,137 @@ void list::list_summary(){
 ************/
 
 void list::convert_int_literal(string time, int & totalHour, int & totalMin, int & totalSec){
-	
+
 	string timeString = "";
-	int tempLen = 0, hourCount = 0, minuteCount = 0, secCount = 0;
-	char firstDigit = '\0', secondDigit = '\0', extra = '\0';
-	
-	string hourTemp="", minTemp="", secTemp="";
-	
+	int tempLen = 0;
+	int up_hr = 0, up_min = 0, up_sec = 0;
+
+	int secIndex = time.length()-2;
 	timeString = time;
 	tempLen = time.length();
-	
-	int secIndex = time.length()-2;
 
-// gettitng time conversion correct. seems to show seconds correctly through current cnversion
-// however minutes seems different
-	int secVal = 0;
-	secVal = atoi (&timeString[secIndex]);
-	
-	cout << "TIME: " << time << endl;
-	cout << secVal << endl;
-	
-	int minVal = 0;
-	int minIndex = time.length() - 4;
-	minVal = atoi(&timeString[minIndex]);
-	
-	cout << minVal << endl;
-	
-//	secondDigit = timeString[time.length() -1];
-//	cout << firstDigit << secondDigit << endl;
+	up_sec = atoi (&timeString[secIndex]);
 
-//	secTemp = timeString[time.length()-2] + timeString[time.length() -1];
-	
-//	cout << secTemp << endl;
-	/*	
-	firstDigit = timeString[time.length()-5];
-	secondDigit = timeString[tempLen-4];
-	
-	minTemp = firstDigit + secondDigit;
-	
-	
-	firstDigit = timeString[tempLen-8];
-	secondDigit = timeString[tempLen-7];
+	int minIndex = time.length() - 5;
+	up_min = atoi(&timeString[minIndex]);
 
-	if(time.length() > 7){
-		extra = timeString[tempLen-9];
-		hourTemp = extra + firstDigit + secondDigit;
+	int hrIndex = time.length() - time.length();
+	up_hr = atoi(&timeString[hrIndex]);
+
+	totalSec = totalSec + up_sec;
+	totalMin = totalMin + up_min;
+	totalHour = totalHour + up_hr;
+
+}
+
+/************
+
+	BASE TIME CONVERTER
+		- converts a number into a value of of 60
+
+************/
+
+int list::convert_time_value(int & value){
+
+	int time_convert = 0;
+	int remain = 0;
+
+	if(value > 60){
+		time_convert = value / 60;
+		remain = time_convert * 60;
+
+		if((value - remain) > 0){
+			value = value - remain;
+			return time_convert;
+		}else {
+			value = value - remain;
+			return -1;
+		}
+
 	}else {
-		hourTemp = firstDigit + secondDigit;
+		return -1;
 	}
-	
-	hourCount = stoi(hourTemp);
-	minuteCount = stoi(minTemp);
-	secCount = stoi(secTemp);*/
-	
-	//totalHour = totalHour + hourCount;
-	//totalMin = totalMin + minuteCount;
-//	totalSec = totalSec + secCount;
+}
 
+
+/************
+
+	GET LIST LENGTH
+		- gets the current length of a list item
+
+************/
+
+int list::list_length(){
+
+	if(process != NULL){
+		nptr cur = process;
+		int counter = 0;
+		while(cur->next != NULL){
+			counter = counter + 1;
+			cur = cur->next;
+		}
+		return counter;
+
+	}else {
+		return 0;
+	}
+
+}
+
+/************
+
+	GET USER ID
+		- returns the name of the user id of the list
+
+************/
+
+string list::get_uid(){
+
+	if(process != NULL){
+		return process->uid;
+	}else {
+		return "";
+	}
+}
+
+/************
+
+	RETURNS PID
+		- returns current pid
+
+************/
+
+int list::get_pid(){
+	if(process != NULL){
+		return process->pid;
+	}else {
+		return -1;
+	}
+}
+
+/************
+
+	GET THE LONGEST PATH OF THE LIST
+		- returns the path with the longest length
+
+************/
+
+string list::get_longest_path(){
+
+	if(process != NULL){
+		nptr cur = process;
+		int longest = 0;
+		string tempLong = "";
+
+		while (cur->next != NULL){
+			if(cur->location.length() > longest){
+				longest = cur->location.length();
+				tempLong =cur->location;
+			}
+			cur = cur->next;
+		}
+		return tempLong;
+	}else {
+		return "";
+	}
 }
