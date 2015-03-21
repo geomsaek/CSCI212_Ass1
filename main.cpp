@@ -1,16 +1,18 @@
 /****
 *
-*
-*
-*
+*	Name:			Matthew Saliba
+*	Desc:			Main Function file
+*	Date Mod:		22nd March 2015
+*	Task:			Assignment 1
+*	Student #:		3284165
 *
 *****/
 
-#include <iostream>
-#include <cstdlib>
+#include<iostream>
 #include<string>
+#include<cstdlib>
+#include <stdlib.h>
 #include<cstring>
-
 #include "hashtable.h"
 
 using namespace std;
@@ -42,7 +44,7 @@ int main(){
 	}
 
 	hash_index.copy_sort_list(cur_users);
-	//hash_index.show_table();
+
 	hash_index.summary();
 
     return 0;

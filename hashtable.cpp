@@ -1,13 +1,17 @@
 /****
 *
-*
-*
-*
+*	Name:			Matthew Saliba
+*	Desc:			Hash Table class functions
+*	Date Mod:		22nd March 2015
+*	Task:			Assignment 1
+*	Student #:		3284165
 *
 *****/
 
 #include<iostream>
 #include<string>
+#include<cstdlib>
+#include <stdlib.h>
 #include "hashtable.h"
 using namespace std;
 
@@ -18,13 +22,11 @@ table::table(){
 		row[i] = NULL;
 	}
 	table_size = 120;
-//	user_ids[120] = "";
-//	user_id_size = -1;
+
 }
 
 table::~table(){
-	
-	
+	delete [] row;
 }
 
 /************
@@ -105,10 +107,8 @@ void table::show_table(){
 	for(int i = 0; i < 120; i++){
 		if(row[i] != NULL){
 			cout << endl;
-			//cout << "****************************************************************************************************************************************************************************************************" << endl;
 			cout << "UID" << "\t\t" << "PID" << "\t\t" << "PPID" << "\t\t" << "C" << "\t\t" << "STIME" << "\t\t" << "TTY" << "\t\t" << "TIME" << "\t\t" << "LOCATION" << endl;
 			row[i]->output_list_char("\t\t");
-			//cout << "****************************************************************************************************************************************************************************************************" << endl;
 			cout << endl;
 		}
 
@@ -125,29 +125,17 @@ void table::show_table(){
 
 void table::summary(){
 
-	int processCount = 0;
-	string curLong = "";
-	int tempLong = 0;
-	string retLong = "";
-	int long_pid = 0;
-	string long_uid = "";
-
-	int greatLength = 0;
-	string lengthUser = "";
-
-	int leastLength = 9999;
-	string leastUser = "";
+	int tempLong = 0,long_pid = 0, greatLength = 0, leastLength = 9999, processCount = 0, totalHour = 0, totalMin = 0, totalSec = 0, tempPID= 0;
+	string retLong = "", long_uid = "", lengthUser = "", leastUser = "", curLong = "", tempUID = "";
 
 	for(int i = 0; i < 120; i++){
 		if(row[i] != NULL){
 
 			row[i]->list_summary();
-			retLong = row[i]->get_longest_path();
+			retLong = row[i]->get_longest_path(tempPID, tempUID);
 			if(retLong.length() > tempLong){
 				tempLong = retLong.length();
-				curLong = retLong;
-				long_pid = row[i]->get_pid();
-				long_uid = row[i]->get_uid();
+				curLong = row[i]->get_longest_path(long_pid, long_uid);
 			}
 			processCount = processCount + 1;
 			if(row[i]->list_length() > greatLength){
@@ -159,8 +147,11 @@ void table::summary(){
 				leastUser = row[i]->get_uid();
 			}
 
+			row[i]->get_total_time(totalHour, totalMin,totalSec);
+
 		}
 	}
+
 	cout << "Statistical Summary" << endl;
 	cout << "==================" << endl;
 	cout << "There are a total of " << processCount << " processes in the process table." << endl;
@@ -169,5 +160,8 @@ void table::summary(){
 	cout << "User " << leastUser << " has the least processes in the table (count = " << leastLength << ")" << endl;
 	cout << endl;
 	cout << "The process with the longest path name is pid " << long_pid << " with the path name " << curLong << " belongong to the " << long_uid << " user" << endl;
+	cout << endl;
+	cout << "The average CPU time used by all processes is " << totalHour /processCount << " hours " << totalMin / processCount << " minutes and " << totalSec /processCount << " seconds" << endl;
+	cout << endl;
 
 }

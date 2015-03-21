@@ -1,8 +1,10 @@
 /****
 *
-*
-*
-*
+*	Name:			Matthew Saliba
+*	Desc:			List manager process class and string list class
+*	Date Mod:		22nd March 2015
+*	Task:			Assignment 1
+*	Student #:		3284165
 *
 *****/
 
@@ -48,19 +50,19 @@ string_list::~string_list(){
 
 void string_list::insert(string new_value){
 
+	snptr current_lister = NULL;
 	snptr temp = new string_node;
 	temp->value = new_value;
 	temp->next = NULL;
-	
-	
+
 	if(pvalues == NULL){
 		pvalues = temp;
 	}else {
-		snptr cur = pvalues;
-		while(cur->next != NULL){
-			cur = cur->next; 
+		current_lister = pvalues;
+		while(current_lister->next != NULL){
+			current_lister = current_lister->next; 
 		}
-		cur->next = temp;
+		current_lister->next = temp;
 		temp = pvalues;
 	}
 
@@ -122,11 +124,11 @@ void string_list::reset_cur_pointer(){
 
 void string_list::output_list(){
 	
-	snptr cur = pvalues;
+	snptr current_lister = pvalues;
 	
-	while(cur->next != NULL){
-		cout << cur->value << endl;
-		cur = cur->next;
+	while(current_lister->next != NULL){
+		cout << current_lister->value << endl;
+		cur = current_lister->next;
 	}
 	
 }
@@ -144,7 +146,22 @@ list::list(){
 /************ DESTRUCTOR  ************/
 
 list::~list(){
+
+	nptr temp = NULL;
 	
+	if(process != NULL){
+		nptr temp = process;
+		while(process->next != NULL){
+		
+			temp = process;
+			process = process->next;
+		
+			delete temp;
+		
+		}
+		process = NULL;
+	}
+	return;
 }
 
 /************ 
@@ -162,11 +179,15 @@ void list::format_string(string server_list){
 	string temp;
 	string process_array[10];
 	char singular = '\0';
+	int slash_counter = 0;
 
 	for(int i = 0; i < server_list.length(); i++){
 			singular = server_list[i];
 			if(server_list[i] == '/'){
-				slash = true;
+				if(slash_counter >1){
+					slash = true;
+				}
+				slash_counter++;
 			}
 
 			if(!slash){
@@ -192,10 +213,12 @@ void list::format_string(string server_list){
 				}
 			}else {
 				temp = temp + singular;
+				slash_counter = 0;
 			}
 	}
 
  	add_values(process_array, temp);
+ 	delete [] process_array;
 	
 }
 
@@ -209,25 +232,40 @@ void list::add_values(string process_array[10], string locationVal){
 	
 	nptr temp = new node;
 
-	temp->uid = process_array[0];
-	temp->pid = stoi(process_array[1]);
-	temp->ppid = stoi(process_array[2]);
-	temp->c = process_array[3];
- 	temp->stime = process_array[4];
- 	temp->tty = process_array[5];
- 	temp->time = process_array[6];
- 	temp->location = locationVal;
- 	temp->next = NULL;
+	string temp_holder = process_array[1];
+	char int_char_convert[100];
+	char clear_chars[100] = { '\0' };
 	
-	if(process == NULL){
-		process = temp;
-	}else {
-		nptr cur = process;
-		while(cur->next != NULL){
-			cur = cur->next;
+	if(locationVal != "<defunct>"){
+	
+		strcpy(int_char_convert,temp_holder.c_str());
+		temp->uid = process_array[0];
+	
+		temp->pid = atoi(int_char_convert);
+	
+		temp_holder = process_array[2];
+		strcpy(int_char_convert,clear_chars);
+		strcpy(int_char_convert,temp_holder.c_str());
+
+		temp->ppid = atoi(int_char_convert);
+	
+		temp->c = process_array[3];
+		temp->stime = process_array[4];
+		temp->tty = process_array[5];
+		temp->time = process_array[6];
+		temp->location = locationVal;
+		temp->next = NULL;
+	
+		if(process == NULL){
+			process = temp;
+		}else {
+			nptr cur = process;
+			while(cur->next != NULL){
+				cur = cur->next;
+			}
+			cur->next = temp;
+			temp = process;
 		}
-		cur->next = temp;
-		temp = process;
 	}
 	
 	return;
@@ -379,6 +417,38 @@ void list::list_summary(){
 	}
 }
 
+
+/************
+
+	GET TOTAL TIME
+		- gets the total time of a list and associates this to referenced values
+
+************/
+
+void list::get_total_time(int &totalHour, int & totalMin, int & totalSec){
+
+	nptr cur = process;
+	int carry = -1;
+
+	while(cur->next != NULL){
+		convert_int_literal(cur->time, totalHour, totalMin, totalSec);
+		cur = cur->next;
+	}
+
+	carry = convert_time_value(totalSec);
+	if(carry != -1){
+		totalMin = totalMin + carry;
+		carry = convert_time_value(totalMin);
+	}
+	if(carry != -1){
+		totalHour = totalHour + carry;
+	}
+
+	return;
+
+}
+
+
 /************
 
 	CONVERT INTEGER
@@ -502,7 +572,7 @@ int list::get_pid(){
 
 ************/
 
-string list::get_longest_path(){
+string list::get_longest_path(int & long_pid, string & long_uid){
 
 	if(process != NULL){
 		nptr cur = process;
@@ -513,6 +583,8 @@ string list::get_longest_path(){
 			if(cur->location.length() > longest){
 				longest = cur->location.length();
 				tempLong =cur->location;
+				long_pid = cur->pid;
+				long_uid = cur->uid;
 			}
 			cur = cur->next;
 		}

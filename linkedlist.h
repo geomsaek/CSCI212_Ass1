@@ -1,12 +1,18 @@
 /****
 *
-*
-*
-*
+*	Name:			Matthew Saliba
+*	Desc:			List manager process class and string list class defs
+*	Date Mod:		22nd March 2015
+*	Task:			Assignment 1
+*	Student #:		3284165
 *
 *****/
 
 #include<iostream>
+#include<iostream>
+#include<string>
+#include<cstdlib>
+#include <stdlib.h>
 using namespace std;
 
 class list;
@@ -74,13 +80,14 @@ class list {
 		void output_list();
 		void output_list_char(string);
 		void list_summary();
+		void get_total_time(int &, int &, int &);
 		void convert_int_literal(string, int &, int &, int &);
 		void summary();
 
 		int list_length();
 		string get_uid();
 		int get_pid();
-		string get_longest_path();
+		string get_longest_path(int &, string &);
 
 	private:
 		
