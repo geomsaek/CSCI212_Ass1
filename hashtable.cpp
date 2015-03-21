@@ -15,8 +15,12 @@
 #include "hashtable.h"
 using namespace std;
 
-// initialise all pointers to NULL;
+/************
 
+	CONSTRUCTOR
+		- initialise all pointers to NULL
+		
+************/
 table::table(){
 	for(int i = 0; i < 120; i++){
 		row[i] = NULL;
@@ -25,6 +29,12 @@ table::table(){
 
 }
 
+/************
+
+	DESTRUCTOR
+		- removes the current array list
+
+************/
 table::~table(){
 	delete [] row;
 }
