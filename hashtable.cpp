@@ -147,7 +147,7 @@ void table::summary(){
 				tempLong = retLong.length();
 				curLong = row[i]->get_longest_path(long_pid, long_uid);
 			}
-			processCount = processCount + 1;
+			processCount = processCount + row[i]->list_length();
 			if(row[i]->list_length() > greatLength){
 				greatLength = row[i]->list_length();
 				lengthUser = row[i]->get_uid();

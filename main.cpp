@@ -27,6 +27,7 @@ int main(){
 	table hash_index;
 	list cur_users;
 	
+	// get the values from the command
 	while (getline(cin, temp)) {
 		
 		if(counter > 0){
@@ -35,6 +36,7 @@ int main(){
 		counter++;
 	}
 	
+	// read these values as a string and insert to a list
 	temp = "";
 	while(read.get_cur_increment() != false){
 		temp = read.get_single_value();
@@ -43,8 +45,10 @@ int main(){
 		}
 	}
 
+	// sort this list and break apart the values into process lists
 	hash_index.copy_sort_list(cur_users);
 
+	// output the summary
 	hash_index.summary();
 
     return 0;

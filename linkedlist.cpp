@@ -218,7 +218,6 @@ void list::format_string(string server_list){
 	}
 
  	add_values(process_array, temp);
- 	delete [] process_array;
 	
 }
 
